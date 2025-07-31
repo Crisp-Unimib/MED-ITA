@@ -1,0 +1,37 @@
+provider: custom_openai # one of [openai, custom_openai, google, anthropic]
+model: MODEL_NAME
+api_key: EMPTY # default vllm key
+temperature: 0.0
+max_tokens: 350
+
+system_message: # set a custom system message
+
+# (for custom OpenAI-compatible API)
+provider_kwargs:
+  base_url: https://openrouter.ai/api/v1 # http://localhost:8000/v1
+  provider:
+    order: [] # Optional: Specify provider order
+    ignore: [] # Optional: Ignore specific providers
+  # allow_fallbacks: true # Optional: Allow fallbacks to other providers
+  reasoning:
+    enabled: false # Enable reasoning
+    max_tokens: 0
+
+rate_limiting:
+  enabled: true
+  requests_per_minute: 30
+
+limit: # limit to n examples
+fast: true # use CoT or not
+
+data:
+  data_file: ./dataset.jsonl
+  output_dir: results
+
+num_threads: 10
+
+auto_resume: true # resume from last checkpoint
+
+checkpointing:
+  enabled: true
+  checkpoint_interval: 50
