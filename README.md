@@ -5,11 +5,10 @@
 We introduce MED-ITA, a large-scale evaluation benchmark designed to assess the medical knowledge and understanding capabilities of Large Language Models (LLMs) in the Italian language.
 
 <p align="center">
-  <img src="./img/examples.png" width="350"/>
+  <img src="./img/examples.png" width="350" style="background-color: black"/>
 </p>
 
-Above are example questions from _MED-ITA_. **Note**: every example is a direct translation; the original questions
-are in Italian. The correct option is marked by (✓).
+Above are example questions from _MED-ITA_. **Note**: every example is a direct translation; the original questions are in Italian. The correct option is marked by (✓).
 
 ## Dataset Details
 
@@ -99,7 +98,7 @@ The longest question is 700 characters long. The total number of tokens in the i
 | `question`       | [String]  | The actual content of the question              |
 | `options`        | [List]    | The options to choose from. Only one is correct |
 | `answer`         | [String]  | The correct answer out of the options           |
-| `category`       | [String]  | The dedicated cultural section of the question  |
+| `category`       | [String]  | The dedicated category of the question          |
 | `macro_category` | [String]  | The macro category of the question              |
 
 ## Dataset Creation
@@ -123,7 +122,11 @@ All documents were freely available and published between 2010 and 2024, typical
 
 Please consult the full paper for a detailed description of our curation process.
 
-<center><img src="./img/workflow.svg" width="400" height="400" /></center>
+<center>
+  <div style="background-color: white; width: 400px;">
+    <img src="./img/workflow.svg" width="400"/>
+  </div>
+</center>
 
 #### Who are the source data producers?
 
