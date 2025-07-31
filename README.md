@@ -122,9 +122,9 @@ All documents were freely available and published between 2010 and 2024, typical
 
 Please consult the full paper for a detailed description of our curation process.
 
-<center>
+<p align="center">
   <img src="./img/workflow.png" width="400"/>
-</center>
+</p>
 
 #### Who are the source data producers?
 
