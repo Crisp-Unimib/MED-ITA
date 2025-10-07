@@ -8,7 +8,7 @@ system_message: # set a custom system message
 
 # (for custom OpenAI-compatible API)
 provider_kwargs:
-  base_url: https://openrouter.ai/api/v1 # http://localhost:8000/v1
+  base_url: http://localhost:8000/v1 # https://openrouter.ai/api/v1 # http://localhost:8000/v1
   provider:
     order: [] # Optional: Specify provider order
     ignore: [] # Optional: Ignore specific providers
@@ -18,7 +18,7 @@ provider_kwargs:
     max_tokens: 0
 
 rate_limiting:
-  enabled: true
+  enabled: false
   requests_per_minute: 30
 
 limit: # limit to n examples
@@ -26,9 +26,10 @@ fast: true # use CoT or not
 
 data:
   data_file: ./dataset.jsonl
+  few_shot_file: 5_shots.jsonl # Set as null to run zero-shot evaluation
   output_dir: results
 
-num_threads: 10
+num_threads: 100
 
 auto_resume: true # resume from last checkpoint
 

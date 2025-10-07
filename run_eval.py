@@ -261,6 +261,7 @@ def configure_payload(
     answer: str,
     fast: bool = False,
     system_message: str = None,
+    few_shots: Optional[List[Dict[str, Any]]] = None,
 ) -> Sample:
     def format_options(options: List[Dict[str, str]]) -> str:
         formatted_options = "\n".join(
@@ -281,6 +282,27 @@ def configure_payload(
             "content": system_message or DEFAULT_SYSTEM_MESSAGE,
         },
     ]
+    
+    if few_shots:
+        for shot in few_shots:
+            shot_options, shot_merged_letters = format_options(shot["options"])
+            messages.extend(
+                [
+                    {
+                        "role": "user",
+                        "content": USER_QUERY_TEMPLATE.format(
+                            topic=shot["category"],
+                            question=shot["question"],
+                            options=shot_options,
+                            merged_letters=shot_merged_letters,
+                        ),
+                    },
+                    {
+                        "role": "assistant",
+                        "content": shot["answer"],
+                    },
+                ]
+            )
 
     messages.append(
         {
@@ -319,6 +341,9 @@ def process_request(
     )
     return ChatCompletionResponse(**request.model_dump(), output=completion)
 
+def load_few_shots(file_path: str) -> List[Dict[str, Any]]:
+    few_shots = pd.read_json(file_path, lines=True)
+    return few_shots.to_dict(orient="records")
 
 def extract_answer_fast(output: str) -> str:
     LETTERS = "ABCDEFGHIJKLMNOPQRSTUVWXYZ"
@@ -521,6 +546,10 @@ def process(
 def load_requests(config: DictConfig) -> List[ChatCompletionRequest]:
     df = pd.read_json(config.data.data_file, lines=True)
     data = df.to_dict(orient="records")
+    
+    few_shots = (
+        load_few_shots(config.data.few_shot_file) if config.data.few_shot_file else None
+    )
 
     provider_config = config.get("provider_kwargs", {}).get("provider")
     reasoning_config = config.get("provider_kwargs", {}).get("reasoning", None)
@@ -542,6 +571,7 @@ def load_requests(config: DictConfig) -> List[ChatCompletionRequest]:
             answer=item["answer"],
             fast=config.fast,
             system_message=config.system_message,
+            few_shots=few_shots,
         )
         requests.append(
             ChatCompletionRequest(
